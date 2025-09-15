@@ -1,5 +1,5 @@
 trigger:
-  - main  # O la rama que uses para desplegar
+  - main  # Cambia esto si tu rama principal tiene otro nombre
 
 pool:
   name: Default
@@ -14,27 +14,17 @@ steps:
       version: '6.0.x'  # Ajusta según la versión de .NET que uses
       installationPath: $(Agent.ToolsDirectory)/dotnet
 
-  - task: NuGetToolInstaller@1
+  - script: dotnet restore
+    displayName: 'Restaurar paquetes NuGet'
 
-  - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '**/*.sln'
+  - script: dotnet build --configuration $(buildConfiguration)
+    displayName: 'Compilar aplicación'
 
-  - task: VSBuild@1
-    inputs:
-      solution: '**/*.sln'
-      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PublishUrl=$(Build.ArtifactStagingDirectory)'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: '$(Build.ArtifactStagingDirectory)'
-      Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
+  - script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    displayName: 'Publicar aplicación'
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'aspnetapp'
       publishLocation: 'Container'
