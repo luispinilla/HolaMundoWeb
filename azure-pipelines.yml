@@ -1,36 +1,42 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
-- main
+  - main  # O la rama que uses para desplegar
 
 pool:
-  name: Default  
-#  demands:
-#    - Agent.Name -equals VALE
+  name: Default
+  demands:
+    - Agent.OS -equals VALE
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '6.0.x'  # Ajusta según la versión de .NET que uses
+      installationPath: $(Agent.ToolsDirectory)/dotnet
 
-#- task: NuGetCommand@2
-#  inputs:
-#    restoreSolution: '$(solution)'
+  - task: NuGetToolInstaller@1
 
-#- task: VSBuild@1
-#  inputs:
-#    solution: '$(solution)'
-#    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '**/*.sln'
 
-#- task: VSTest@2
-#  inputs:
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
+  - task: VSBuild@1
+    inputs:
+      solution: '**/*.sln'
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PublishUrl=$(Build.ArtifactStagingDirectory)'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Build.ArtifactStagingDirectory)'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop'
+      ArtifactName: 'aspnetapp'
+      publishLocation: 'Container'
