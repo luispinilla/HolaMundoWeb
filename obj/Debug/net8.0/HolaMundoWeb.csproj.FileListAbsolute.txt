@@ -28,3 +28,4 @@ c:\Users\lgpm\Downloads\GitHub\Multibank\Site\HolaMundoWeb\obj\Debug\net8.0\refi
 c:\Users\lgpm\Downloads\GitHub\Multibank\Site\HolaMundoWeb\obj\Debug\net8.0\HolaMundoWeb.pdb
 c:\Users\lgpm\Downloads\GitHub\Multibank\Site\HolaMundoWeb\obj\Debug\net8.0\HolaMundoWeb.genruntimeconfig.cache
 c:\Users\lgpm\Downloads\GitHub\Multibank\Site\HolaMundoWeb\obj\Debug\net8.0\ref\HolaMundoWeb.dll
+c:\Users\lgpm\Downloads\GitHub\Multibank\Site\HolaMundoWeb\obj\Debug\net8.0\HolaMundoWeb.sourcelink.json

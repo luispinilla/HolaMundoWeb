@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj": {}
+    "c:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj": {
+    "c:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj",
+        "projectUniqueName": "c:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj",
         "projectName": "HolaMundoWeb",
-        "projectPath": "C:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj",
+        "projectPath": "c:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\HolaMundoWeb.csproj",
         "packagesPath": "C:\\Users\\lgpm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\obj\\",
+        "outputPath": "c:\\Users\\lgpm\\Downloads\\GitHub\\Multibank\\Site\\HolaMundoWeb\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lgpm\\AppData\\Roaming\\NuGet\\NuGet.Config"
