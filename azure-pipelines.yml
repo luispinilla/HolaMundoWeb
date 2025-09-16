@@ -1,5 +1,5 @@
 trigger:
-  - main  # Cambia esto si tu rama principal tiene otro nombre
+  - main
 
 pool:
   name: Default
@@ -7,24 +7,61 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-steps:
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'sdk'
-      version: '8.0.x'  # Ajusta según la versión de .NET que uses
-      installationPath: $(Agent.ToolsDirectory)/dotnet
-
-  - script: dotnet restore
-    displayName: 'Restaurar paquetes NuGet'
-
-  - script: dotnet build --configuration $(buildConfiguration)
+stages:
+  - stage: Build
     displayName: 'Compilar aplicación'
+    jobs:
+      - job: BuildJob
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '8.0.x'
+              installationPath: $(Agent.ToolsDirectory)/dotnet
 
-  - script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
-    displayName: 'Publicar aplicación'
+          - script: dotnet restore
+            displayName: 'Restaurar paquetes'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'aspnetapp'
-      publishLocation: 'Container'
+          - script: dotnet build --configuration $(buildConfiguration)
+            displayName: 'Compilar aplicación'
+
+          - script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+            displayName: 'Publicar aplicación'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'aspnetapp'
+              publishLocation: 'Container'
+
+  - stage: DeployToDev
+    displayName: 'Desplegar en Dev'
+    dependsOn: Build
+    jobs:
+      - deployment: DevDeploy
+        environment: Dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: aspnetapp
+
+                - script: echo "Desplegando en entorno Dev..."
+                  displayName: 'Simulación de despliegue en Dev'
+
+  - stage: DeployToQA
+    displayName: 'Desplegar en QA con aprobación'
+    dependsOn: DeployToDev
+    jobs:
+      - deployment: QADeploy
+        environment: QA
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: aspnetapp
+
+                - script: echo "Desplegando en entorno QA..."
+                  displayName: 'Simulación de despliegue en QA'
